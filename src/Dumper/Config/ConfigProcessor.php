@@ -147,8 +147,9 @@ final class ConfigProcessor
 
         foreach ($tableData['converters'] as $columnName => $converterData) {
             $disabled = $converterData['disabled'] ?? false;
+            $optional = $converterData['optional'] ?? false;
 
-            if (!$disabled && !in_array($columnName, $columns)) {
+            if (!$disabled && !$optional && !in_array($columnName, $columns)) {
                 $message = 'The table "%s" uses a converter on an undefined column "%s".';
                 throw new RuntimeException(sprintf($message, $tableName, $columnName));
             }

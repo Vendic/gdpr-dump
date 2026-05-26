@@ -66,6 +66,31 @@ final class ConfigProcessorTest extends TestCase
     }
 
     /**
+     * Test that a converter on an optional column does not throw when the column doesn't exist.
+     */
+    public function testOptionalConverterOnMissingColumnDoesNotThrow(): void
+    {
+        $data = [
+            'tables' => [
+                'table1' => [
+                    'converters' => [
+                        'non_existent_column' => [
+                            'converter' => 'randomizeEmail',
+                            'optional' => true,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $config = new Config($data);
+        $processor = $this->createConfigProcessor();
+        $processor->process($config);
+
+        $this->addToAssertionCount(1);
+    }
+
+    /**
      * Create a config processor object.
      */
     private function createConfigProcessor(): ConfigProcessor
@@ -74,6 +99,13 @@ final class ConfigProcessorTest extends TestCase
         $metadataMock->expects($this->atMost(1))
             ->method('getTableNames')
             ->willReturn(['table1', 'table2', 'table3']);
+
+        $metadataMock->method('getColumnNames')
+            ->willReturnMap([
+                ['table1', ['col1', 'col2']],
+                ['table2', ['col1', 'col2']],
+                ['table3', ['col1', 'col2']],
+            ]);
 
         return new ConfigProcessor($metadataMock);
     }

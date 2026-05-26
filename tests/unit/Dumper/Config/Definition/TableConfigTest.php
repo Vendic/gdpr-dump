@@ -59,6 +59,24 @@ final class TableConfigTest extends TestCase
     }
 
     /**
+     * Test that an optional converter is registered (unlike disabled), so it runs when the column exists.
+     */
+    public function testOptionalConverterIsRegistered(): void
+    {
+        $config = new TableConfig('table1', [
+            'converters' => [
+                'col_optional' => ['converter' => 'randomizeEmail', 'optional' => true],
+                'col_disabled' => ['converter' => 'randomizeEmail', 'disabled' => true],
+            ],
+        ]);
+
+        $converters = $config->getConverters();
+
+        $this->assertArrayHasKey('col_optional', $converters);
+        $this->assertArrayNotHasKey('col_disabled', $converters);
+    }
+
+    /**
      * Test the condition for skipping data conversion.
      */
     public function testConversionSkipCondition(): void

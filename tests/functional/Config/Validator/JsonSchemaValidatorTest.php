@@ -9,7 +9,7 @@ use Smile\GdprDump\Config\Validator\JsonSchemaValidator;
 use Smile\GdprDump\Tests\Functional\TestCase;
 use stdClass;
 
-class JsonSchemaValidatorTest extends TestCase
+final class JsonSchemaValidatorTest extends TestCase
 {
     private JsonSchemaValidator $validator;
 
@@ -230,6 +230,9 @@ class JsonSchemaValidatorTest extends TestCase
 
     /**
      * Add required data to the config params.
+     *
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
      */
     private function prepareData(array $data): array
     {

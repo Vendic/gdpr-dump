@@ -9,7 +9,7 @@ use Smile\GdprDump\DependencyInjection\ConverterAliasResolver;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
-class ConverterFactory
+final class ConverterFactory
 {
     public function __construct(
         private ContainerInterface $container,
@@ -19,6 +19,8 @@ class ConverterFactory
 
     /**
      * Create a converter from a name (e.g. "randomizeText").
+     *
+     * @param array<string, mixed> $parameters
      */
     public function create(string $name, array $parameters = []): ConverterInterface
     {
